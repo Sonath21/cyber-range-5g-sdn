@@ -1,20 +1,13 @@
-# ── Python virtual-envs ─────────────────────────────────────────
+# ── Python virtual-envs ────────────────────────────────────────
 **/venv/
 **/.venv/
 
-# ── Compiled byte-code ─────────────────────────────────────────
+# ── Compiled byte-code ────────────────────────────────────────
 *.py[cod]
 __pycache__/
 
-# ── OS / editor junk (optional) ────────────────────────────────
+# ── OS / editor junk (optional) ───────────────────────────────
 .DS_Store
 .idea/
 .vscode/
-
-# ── Large binary captures you don't want in Git ────────────────
-# (keep only your tiny test pcaps in samples/)
-*.pcap
-*.pcapng
-!samples/*.pcap         # but DO keep our sample dns_port.pcap
-!samples/*.pcapng
 
