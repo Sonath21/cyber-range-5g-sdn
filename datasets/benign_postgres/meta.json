@@ -1,0 +1,6 @@
+{
+  "label": "benign_postgres",
+  "src_role": "scanner_client",
+  "dst_role": "postgres_server",
+  "notes": "Captured on lab bridge via make capture (10-s window)"
+}
