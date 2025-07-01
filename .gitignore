@@ -1,0 +1,12 @@
+# Generated output directories
+output_flows/
+# Environments
+venv/
+.venv/
+
+# Caches
+.pytest_cache/
+__pycache__/
+
+# Vagrant
+.vagrant/

@@ -1,0 +1,12 @@
+pyshark==0.6
+scapy==2.6.1
+
+[dev]
+pytest
+pytest-asyncio
+pytest-mock
+black
+pre-commit
+ruff
+mypy
+yamllint

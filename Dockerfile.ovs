@@ -1,0 +1,38 @@
+# Dockerfile.ovs
+FROM ubuntu:22.04
+
+# 1. Install build dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    fakeroot \
+    debhelper \
+    autoconf \
+    automake \
+    libssl-dev \
+    pkg-config \
+    bzip2 \
+    openssl \
+    graphviz \
+    python3-dev \
+    python3-pip \
+    libunbound-dev \
+    wget \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Download and build Open vSwitch from a stable version
+RUN wget https://www.openvswitch.org/releases/openvswitch-2.17.0.tar.gz && \
+    tar -xzf openvswitch-2.17.0.tar.gz && \
+    cd openvswitch-2.17.0 && \
+    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc && \
+    make && \
+    make install
+
+# 3. Expose the OpenFlow port
+EXPOSE 6633
+
+# 4. Define the entrypoint to start OVS and keep the container running
+COPY ./docker/ovs-entrypoint.sh /ovs-entrypoint.sh
+RUN chmod +x /ovs-entrypoint.sh
+ENTRYPOINT ["/ovs-entrypoint.sh"]

@@ -1,0 +1,26 @@
+# Dockerfile.ryu
+# Use an older, stable version of Python that is compatible with Ryu
+FROM python:3.7
+
+# 1. Install build dependencies and git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    gcc \
+    libssl-dev \
+    libffi-dev \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. With a compatible Python version, we can install ryu directly.
+RUN pip install ryu
+# Downgrade eventlet to a version compatible with ryu
+RUN pip install 'eventlet==0.30.2'
+
+# 3. Set up the final working directory for our app
+WORKDIR /app
+COPY ./src/ryu_app ./ryu_app
+
+# 4. Default command to run the simple switch application
+CMD ["ryu-manager", "--verbose", "ryu_app/simple_switch.py", "--ofp-tcp-listen-port", "6633"]
+
+

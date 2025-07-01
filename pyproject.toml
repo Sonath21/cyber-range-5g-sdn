@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyber_range_5g_sdn"
+version = "0.1.0"
+readme = "README.md"
+dependencies = [
+    "pyshark==0.6",
+    "scapy==2.6.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-mock",
+    "black",
+    "pre-commit",
+    "ruff",
+    "mypy",
+    "yamllint",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

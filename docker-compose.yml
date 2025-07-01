@@ -1,0 +1,78 @@
+networks:
+  sdn_net:
+    driver: bridge
+
+services:
+  ryu:
+    build:
+      context: .
+      dockerfile: Dockerfile.ryu
+    image: cyber-range/ryu
+    container_name: ryu-controller
+    ports:
+      - "6633:6633" # OpenFlow
+      - "8080:8080" # Ryu REST API (optional)
+    networks:
+      - sdn_net
+    # We add a restart policy to ensure the controller is ready for switches
+    restart: on-failure
+
+  ovs1:
+    build:
+      context: .
+      dockerfile: Dockerfile.ovs
+    image: cyber-range/ovs
+    container_name: ovs-switch1
+    privileged: true
+    depends_on:
+      - ryu
+    networks:
+      - sdn_net
+    command: >
+      bash -c "sleep 5 && # Give OVS time to start
+               ovs-vsctl add-br br-int &&
+               ovs-vsctl set-controller br-int tcp:ryu-controller:6633 &&
+               ovs-vsctl set-fail-mode br-int secure &&
+               ovs-vsctl add-port br-int p1 -- set interface p1 type=patch options:peer=p2 &&
+               ovs-vsctl add-port br-int p3 -- set interface p3 type=patch options:peer=p4 &&
+               tail -f /dev/null"
+
+  ovs2:
+    build:
+      context: .
+      dockerfile: Dockerfile.ovs
+    image: cyber-range/ovs
+    container_name: ovs-switch2
+    privileged: true
+    depends_on:
+      - ryu
+    networks:
+      - sdn_net
+    command: >
+      bash -c "sleep 5 && # Give OVS time to start
+               ovs-vsctl add-br br-int &&
+               ovs-vsctl set-controller br-int tcp:ryu-controller:6633 &&
+               ovs-vsctl set-fail-mode br-int secure &&
+               ovs-vsctl add-port br-int p2 -- set interface p2 type=patch options:peer=p1 &&
+               ovs-vsctl add-port br-int p5 -- set interface p5 type=patch options:peer=p6 &&
+               tail -f /dev/null"
+
+  h1:
+    image: busybox:latest
+    container_name: host1
+    # Command to keep the container running
+    command: tail -f /dev/null
+    depends_on:
+      - ovs1
+    networks:
+      - sdn_net
+
+  h2:
+    image: busybox:latest
+    container_name: host2
+    command: tail -f /dev/null
+    depends_on:
+      - ovs2
+    networks:
+      - sdn_net
+

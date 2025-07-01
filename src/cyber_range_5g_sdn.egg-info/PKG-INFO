@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: cyber_range_5g_sdn
+Version: 0.1.0
+Description-Content-Type: text/markdown
+Requires-Dist: pyshark==0.6
+Requires-Dist: scapy==2.6.1
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: pytest-mock; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: yamllint; extra == "dev"
