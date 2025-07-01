@@ -19,6 +19,8 @@ RUN apt-get update && \
     libunbound-dev \
     wget \
     net-tools \
+    iproute2 \
+    inetutils-ping \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Download and build Open vSwitch from a stable version
@@ -34,5 +36,6 @@ EXPOSE 6633
 
 # 4. Define the entrypoint to start OVS and keep the container running
 COPY ./docker/ovs-entrypoint.sh /ovs-entrypoint.sh
-RUN chmod +x /ovs-entrypoint.sh
+COPY ./docker/ovs-setup.sh /ovs-setup.sh
+RUN chmod +x /ovs-entrypoint.sh /ovs-setup.sh
 ENTRYPOINT ["/ovs-entrypoint.sh"]
