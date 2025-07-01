@@ -1,0 +1,21 @@
+# docker/Dockerfile.ryu-test
+# This Dockerfile is specifically for running unit tests on the Ryu application.
+# It builds on the base ryu image and adds the necessary testing dependencies.
+
+# Use the existing ryu Dockerfile as a base
+FROM cyber-range/ryu
+
+# Install testing dependencies
+RUN pip install pytest pytest-mock
+
+# Copy the test file into the container
+COPY ./tests/ryu_test_simple_switch.py /app/ryu_app/test_simple_switch.py
+
+# Set the Python path to include the /app directory
+ENV PYTHONPATH="/app"
+
+# Set the working directory
+WORKDIR /app/ryu_app
+
+# The command to run the tests
+CMD ["pytest"]

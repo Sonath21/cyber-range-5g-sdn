@@ -12,3 +12,4 @@ src/ryu_app/simple_switch.py
 tests/test_iface_stats.py
 tests/test_pcap_splitter.py
 tests/test_port_scanner.py
+tests/test_simple_switch.py
