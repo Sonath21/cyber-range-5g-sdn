@@ -2,11 +2,8 @@ networks:
   # Network for controller <-> switch communication
   sdn_net:
     driver: bridge
-  # Virtual "cable" between host1 and the switch
-  link-h1-s1:
-    driver: bridge
-  # Virtual "cable" between host2 and the switch
-  link-h2-s1:
+  # Network for host-to-switch communication
+  host_net:
     driver: bridge
 
 services:
@@ -34,8 +31,7 @@ services:
       - ryu
     networks:
       - sdn_net
-      - link-h1-s1
-      - link-h2-s1
+      - host_net
     command: /ovs-setup.sh
 
   h1:
@@ -47,7 +43,7 @@ services:
     depends_on:
       - ovs1
     networks:
-      - link-h1-s1
+      - host_net
 
   h2:
     image: busybox:latest
@@ -58,4 +54,4 @@ services:
     depends_on:
       - ovs1
     networks:
-      - link-h2-s1
+      - host_net
